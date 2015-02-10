@@ -60,3 +60,23 @@ alpha.fn (Portfolio,sample(1:100,100,replace=TRUE))
 boot.out=boot(Portfolio,alpha.fn,R=1000)
 boot.out
 plot(boot.out)
+<<<<<<< HEAD
+=======
+
+#quiz
+load("5.R.RData")
+head(Xy)
+str(Xy)
+lm.fit <- lm(y~.,data=Xy)
+summary(lm.fit)
+summary(lm.fit)$coef[2,2]
+matplot(Xy,type="l",col=1:3)
+
+lm.fn <- function(df,index){
+  lm.fit2 <- lm(y~X1+X2,data=df[index,])
+  summary(lm.fit2)$coef[2,2]
+}
+boot.out=boot(Xy,lm.fn,R=1000)
+boot.out
+plot(boot.out)
+>>>>>>> 59be23f0770eb55fc4800bc60693aa75e859e406

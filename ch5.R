@@ -59,6 +59,8 @@ alpha.fn (Portfolio,sample(1:100,100,replace=TRUE))
 
 boot.out=boot(Portfolio,alpha.fn,R=1000)
 boot.out
+str(boot.out)
+mean(boot.out$t)
 plot(boot.out)
 <<<<<<< HEAD
 =======
@@ -70,13 +72,44 @@ str(Xy)
 lm.fit <- lm(y~.,data=Xy)
 summary(lm.fit)
 summary(lm.fit)$coef[2,2]
+lm.fit$coef[2]
+
 matplot(Xy,type="l",col=1:3)
 
 lm.fn <- function(df,index){
-  lm.fit2 <- lm(y~X1+X2,data=df[index,])
-  summary(lm.fit2)$coef[2,2]
+  lm.fit2 <- lm(y~X1+X2,data=df,subset=index)
+  #summary(lm.fit2)$coef[2,2]
+  lm.fit2$coef
 }
 boot.out=boot(Xy,lm.fn,R=1000)
 boot.out
 plot(boot.out)
 >>>>>>> 59be23f0770eb55fc4800bc60693aa75e859e406
+
+
+#自定义产生抽样数据
+blocklm.fn <- function(df){
+  lm.fit3 <- lm(y~X1+X2,data=df)
+  #summary(lm.fit2)$coef[2,2]
+  lm.fit3$coef
+}
+
+#每次抽出10个100个连续数据放在一起
+data.lm <- function(data,mle){
+  a <- runif(10,0,10)
+  b <- (floor(a)*100+1)
+  c <- ((floor(a)+1)*100)
+  d <- NULL
+  for (i in 1:10)
+  {
+    d <- c(d,b[i]:c[i])
+  }
+  return(data[d,])
+}
+#data.lm(Xy)
+
+
+
+boot.out=boot(Xy,blocklm.fn,R=1000,sim = "parametric",ran.gen = data.lm)
+boot.out
+plot(boot.out)

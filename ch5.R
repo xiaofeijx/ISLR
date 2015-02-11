@@ -118,3 +118,10 @@ boot.out
 plot(boot.out)
 
 #using tsboot
+tslm.fn <- function(df){
+  lm.fit4 <- lm(y~X1+X2,data=df)
+  #summary(lm.fit2)$coef[2,2]
+  lm.fit4$coef
+}
+tsb <-tsboot(Xy,tslm.fn,R=100,l=100,sim="fixed",n.sim=1000)
+tsb

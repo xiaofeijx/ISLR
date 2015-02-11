@@ -5,7 +5,10 @@ plot(mpg~horsepower,data=Auto)
 
 ## LOOCV
 glm.fit=glm(mpg~horsepower, data=Auto)
+##glm also fit linear models, if you dont give the family 
+summary(glm.fit)
 cv.glm(Auto,glm.fit)$delta #pretty slow (doesnt use formula (5.2) on page 180)
+#raw RSS and corrected RSs from leave one out cv
 
 ##Lets write a simple function to use formula (5.2)
 loocv=function(fit){
@@ -113,3 +116,5 @@ data.lm <- function(data,mle){
 boot.out=boot(Xy,blocklm.fn,R=1000,sim = "parametric",ran.gen = data.lm)
 boot.out
 plot(boot.out)
+
+#using tsboot

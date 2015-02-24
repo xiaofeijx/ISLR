@@ -98,6 +98,7 @@ Here we will explore cubic splines.
  ```{r}
 require(splines)
 fit=lm(wage~bs(age,knots=c(25,40,60)),data=Wage)
+summary(fit)
 plot(age,wage,col="darkgrey")
 lines(age.grid,predict(fit,list(age=age.grid)),col="darkgreen",lwd=2)
 abline(v=c(25,40,60),lty=2,col="darkgreen")
@@ -108,7 +109,7 @@ which can conveniently be specified via the effective degrees of freedom or `df`
 
 ```{r}
 fit=smooth.spline(age,wage,df=16)
-lines(fit,col="red",lwd=2)
+lines(fit,col="purple",lwd=2)
 ```
 
 Or we can use LOO cross-validation to select the smoothing parameter for us automatically:
@@ -140,6 +141,7 @@ Lets see if we need a nonlinear terms for year
 ```{r}
 gam2a=gam(I(wage>250)~s(age,df=4)+year+education,data=Wage,family=binomial)
 anova(gam2a,gam2,test="Chisq")
+plot(gam2a)
 ```
 
 One nice feature of the `gam` package is that it knows how to plot the functions nicely,
